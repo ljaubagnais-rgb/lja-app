@@ -1,60 +1,13 @@
 <!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#f47a16">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>LJA - Application</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="topbar">
-    <button id="menuBtn" class="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
-    <div class="brand">LJA</div>
-  </header>
-
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <button id="closeMenu" class="close-btn" aria-label="Fermer">×</button>
-    <h2>Les Joggeurs Aubagnais</h2>
-    <a href="#" data-page="home">Accueil</a>
-    <a href="#" data-page="courses">Prochaines courses</a>
-    <a href="#" data-page="results">Résultats</a>
-    <a href="#" data-page="prediction">Prédiction de temps</a>
-    <a href="#" data-page="pace-speed">Allure → Vitesse</a>
-    <a href="#" data-page="speed-pace">Vitesse → Allure</a>
-    <a href="#" data-page="effort">Km-Effort</a>
-  </aside>
-  <div id="overlay" class="overlay"></div>
-
-  <main id="app" class="app">
-    <section id="home" class="page active">
-      <div class="hero">
-        <div class="runner-mark" aria-hidden="true">🏃</div>
-        <h1>LES JOGGEURS<br>AUBAGNAIS</h1>
-        <p>Courses • Résultats • Outils running</p>
-      </div>
-      <div class="actions">
-        <button class="action" data-page="courses">PROCHAINES COURSES</button>
-        <button class="action" data-page="results">RÉSULTATS DEPUIS 2023</button>
-        <button class="action" data-page="prediction">PRÉDICTION DE TEMPS</button>
-        <button class="action" data-page="pace-speed">CONVERSION ALLURE → VITESSE</button>
-        <button class="action" data-page="speed-pace">CONVERSION VITESSE → ALLURE</button>
-        <button class="action" data-page="effort">CALCUL KM-EFFORT</button>
-      </div>
-      <div class="club-logo-wrap"><img class="club-logo" src="LOGO_LJA4_2024.jpg" alt="Logo Les Joggeurs Aubagnais"></div>
-    </section>
-
-    <section id="courses" class="page"><button class="back" data-page="home">← Accueil</button><h2>Prochaines courses</h2><p class="placeholder">Prototype : cette page sera ensuite alimentée automatiquement par Google Sheets.</p></section>
-    <section id="results" class="page"><button class="back" data-page="home">← Accueil</button><h2>Résultats depuis 2023</h2><p class="placeholder">Prototype : nous connecterons ici les résultats LJA.</p></section>
-    <section id="prediction" class="page"><button class="back" data-page="home">← Accueil</button><h2>Prédiction de temps</h2><div class="card"><label>Distance réalisée (km)<input id="d1" type="number" min="0.1" step="0.1" value="10"></label><label>Temps réalisé (hh:mm:ss)<input id="t1" type="text" value="00:50:00"></label><label>Distance cible (km)<input id="d2" type="number" min="0.1" step="0.1" value="21.1"></label><button id="predictBtn">Calculer</button><output id="predictionOut"></output></div></section>
-    <section id="pace-speed" class="page"><button class="back" data-page="home">← Accueil</button><h2>Allure → Vitesse</h2><div class="card"><label>Allure (min:sec / km)<input id="paceInput" type="text" value="05:00"></label><button id="paceBtn">Convertir</button><output id="paceOut"></output></div></section>
-    <section id="speed-pace" class="page"><button class="back" data-page="home">← Accueil</button><h2>Vitesse → Allure</h2><div class="card"><label>Vitesse (km/h)<input id="speedInput" type="number" min="0.1" step="0.1" value="12"></label><button id="speedBtn">Convertir</button><output id="speedOut"></output></div></section>
-    <section id="effort" class="page"><button class="back" data-page="home">← Accueil</button><h2>Calcul Km-Effort</h2><div class="card"><label>Distance (km)<input id="distanceInput" type="number" min="0" step="0.1" value="20"></label><label>Dénivelé positif D+ (m)<input id="elevationInput" type="number" min="0" step="10" value="1000"></label><button id="effortBtn">Calculer</button><output id="effortOut"></output><small>Formule utilisée pour ce prototype : distance + D+ / 100.</small></div></section>
-  </main>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f47a16"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>LJA - Application</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"></head><body>
+<header class="topbar"><button id="menuBtn" class="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false">☰</button><div class="brand">LJA</div></header>
+<aside id="drawer" class="drawer" aria-hidden="true"><button id="closeMenu" class="close-btn" aria-label="Fermer">×</button><h2>Les Joggeurs Aubagnais</h2><a href="#" data-page="home">Accueil</a><a href="#" data-page="courses">Prochaines courses</a><a href="#" data-page="results">Résultats</a><a href="#" data-page="prediction">Prédiction de temps</a><a href="#" data-page="pace-speed">Allure → Vitesse</a><a href="#" data-page="speed-pace">Vitesse → Allure</a><a href="#" data-page="effort">Km-Effort</a></aside><div id="overlay" class="overlay"></div>
+<main id="app" class="app">
+<section id="home" class="page active"><div class="hero"><div class="runner-mark" aria-hidden="true">🏃</div><h1>LES JOGGEURS<br>AUBAGNAIS</h1><p>Courses • Résultats • Outils running</p></div><div class="actions"><button class="action" data-page="courses">PROCHAINES COURSES</button><button class="action" data-page="results">RÉSULTATS DEPUIS 2023</button><button class="action" data-page="prediction">PRÉDICTION DE TEMPS</button><button class="action" data-page="pace-speed">CONVERSION ALLURE → VITESSE</button><button class="action" data-page="speed-pace">CONVERSION VITESSE → ALLURE</button><button class="action" data-page="effort">CALCUL KM-EFFORT</button></div><div class="club-logo-wrap"><img class="club-logo" src="LOGO_LJA4_2024.jpg" alt="Logo Les Joggeurs Aubagnais"></div></section>
+<section id="courses" class="page"><button class="back" data-page="home">← Accueil</button><h2>Prochaines courses</h2><p class="placeholder">Cette page sera alimentée par Google Sheets.</p></section>
+<section id="results" class="page"><button class="back" data-page="home">← Accueil</button><h2>Résultats depuis 2023</h2><div class="results-tools"><input id="resultSearch" type="search" placeholder="Coureur ou course…"><select id="yearFilter"><option value="">Toutes les années</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select></div><div id="resultsStatus" class="results-status">Chargement des résultats…</div><div id="resultsList" class="results-list"></div></section>
+<section id="prediction" class="page"><button class="back" data-page="home">← Accueil</button><h2>Prédiction de temps</h2><div class="card"><label>Distance réalisée (km)<input id="d1" type="number" min="0.1" step="0.1" value="10"></label><label>Temps réalisé (hh:mm:ss)<input id="t1" type="text" value="00:50:00"></label><label>Distance cible (km)<input id="d2" type="number" min="0.1" step="0.1" value="21.1"></label><button id="predictBtn">Calculer</button><output id="predictionOut"></output></div></section>
+<section id="pace-speed" class="page"><button class="back" data-page="home">← Accueil</button><h2>Allure → Vitesse</h2><div class="card"><label>Allure (min:sec / km)<input id="paceInput" type="text" value="05:00"></label><button id="paceBtn">Convertir</button><output id="paceOut"></output></div></section>
+<section id="speed-pace" class="page"><button class="back" data-page="home">← Accueil</button><h2>Vitesse → Allure</h2><div class="card"><label>Vitesse (km/h)<input id="speedInput" type="number" min="0.1" step="0.1" value="12"></label><button id="speedBtn">Convertir</button><output id="speedOut"></output></div></section>
+<section id="effort" class="page"><button class="back" data-page="home">← Accueil</button><h2>Calcul Km-Effort</h2><div class="card"><label>Distance (km)<input id="distanceInput" type="number" min="0" step="0.1" value="20"></label><label>Dénivelé positif D+ (m)<input id="elevationInput" type="number" min="0" step="10" value="1000"></label><button id="effortBtn">Calculer</button><output id="effortOut"></output><small>Formule utilisée : distance + D+ / 100.</small></div></section>
+</main><script src="app.js"></script></body></html>
