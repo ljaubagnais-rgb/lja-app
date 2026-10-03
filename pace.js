@@ -17,6 +17,8 @@
     i.placeholder=placeholder;
     i.autocomplete='off';
     i.style.cssText='width:90px;text-align:center;font-size:22px;font-weight:700;padding:12px 8px';
+    i.addEventListener('focus',()=>i.select());
+    i.addEventListener('click',()=>i.select());
     return i;
   }
 
@@ -34,7 +36,6 @@
     let s=parseInt(sec.value||'0',10);
     if(!Number.isFinite(m)||!Number.isFinite(s)||m<0||s<0){out.textContent='Saisir une allure valide';return;}
     if(s>59)s=59;
-    sec.value=String(s).padStart(2,'0');
     const total=m*60+s;
     original.value=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     out.textContent=total>0?`${(3600/total).toFixed(2).replace('.',',')} km/h`:'Saisir une allure valide';
@@ -51,6 +52,8 @@
 
   min.addEventListener('input',()=>clean(min,99,sec));
   sec.addEventListener('input',()=>clean(sec,59,null));
+  sec.addEventListener('blur',()=>{if(sec.value!=='')sec.value=String(Math.min(59,Number(sec.value)||0)).padStart(2,'0');calculate();});
+  min.addEventListener('blur',()=>{if(min.value!=='')min.value=String(Number(min.value)||0).padStart(2,'0');calculate();});
   sec.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!sec.value)min.focus()});
   btn.onclick=calculate;
   calculate();
