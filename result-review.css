@@ -1,0 +1,29 @@
+/* Lisibilité du récapitulatif de saisie résultat */
+#resultReviewModal, #resultConfirmModal, .result-review-modal, .result-confirm-modal {
+  color: #171717;
+}
+#resultReviewModal .modal-content, #resultConfirmModal .modal-content,
+.result-review-modal .modal-content, .result-confirm-modal .modal-content {
+  color: #171717;
+}
+#resultReviewModal h2, #resultConfirmModal h2,
+.result-review-modal h2, .result-confirm-modal h2 {
+  color: #171717 !important;
+}
+#resultReviewModal p, #resultConfirmModal p,
+#resultReviewModal div, #resultConfirmModal div,
+#resultReviewModal span, #resultConfirmModal span,
+.result-review-modal p, .result-confirm-modal p,
+.result-review-modal div, .result-confirm-modal div,
+.result-review-modal span, .result-confirm-modal span {
+  color: #171717;
+}
+.result-review-summary, #resultReviewSummary, #resultConfirmSummary {
+  color: #171717 !important;
+  line-height: 1.45;
+  overflow-y: auto;
+  max-height: 55vh;
+}
+.result-review-summary strong, #resultReviewSummary strong, #resultConfirmSummary strong {
+  color: #171717 !important;
+}
