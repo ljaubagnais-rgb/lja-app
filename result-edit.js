@@ -62,16 +62,7 @@
     dlg = document.createElement('div');
     dlg.id = 'resultReviewDialog';
     dlg.style.cssText = 'display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.60);padding:16px;align-items:center;justify-content:center';
-    dlg.innerHTML = `
-      <div style="background:#fff;color:#181818;border-radius:18px;padding:20px;max-width:520px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 15px 45px rgba(0,0,0,.3)">
-        <h2 style="margin:0 0 14px;color:#181818;font-size:24px">Vérifiez votre saisie</h2>
-        <div id="resultReviewBody" style="color:#181818;line-height:1.4;font-size:16px"></div>
-        <div style="display:grid;gap:10px;margin-top:18px">
-          <button type="button" id="resultConfirmBtn" class="submit-result-btn">CONFIRMER LA SAISIE</button>
-          <button type="button" id="resultModifyBtn" class="secondary-btn">MODIFIER</button>
-          <button type="button" id="resultCancelBtn" class="secondary-btn">ANNULER</button>
-        </div>
-      </div>`;
+    dlg.innerHTML = `<div style="background:#fff;color:#181818;border-radius:18px;padding:20px;max-width:520px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 15px 45px rgba(0,0,0,.3)"><h2 style="margin:0 0 14px;color:#181818;font-size:24px">Vérifiez votre saisie</h2><div id="resultReviewBody" style="color:#181818;line-height:1.4;font-size:16px"></div><div style="display:grid;gap:10px;margin-top:18px"><button type="button" id="resultConfirmBtn" class="submit-result-btn">CONFIRMER LA SAISIE</button><button type="button" id="resultModifyBtn" class="secondary-btn">MODIFIER</button><button type="button" id="resultCancelBtn" class="secondary-btn">ANNULER</button></div></div>`;
     document.body.appendChild(dlg);
     document.getElementById('resultModifyBtn').onclick = () => closeDialog();
     document.getElementById('resultCancelBtn').onclick = () => { closeDialog(); status.textContent = 'Saisie non envoyée.'; };
@@ -79,31 +70,14 @@
     return dlg;
   }
 
-  function esc(s) {
-    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+  function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function row(label, value, suffix='') {
     if (value === undefined || value === null || String(value).trim() === '') return '';
     return `<div style="display:grid;grid-template-columns:minmax(120px,42%) 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e8e8e8;color:#181818"><strong style="color:#181818">${esc(label)}</strong><span style="color:#181818;overflow-wrap:anywhere">${esc(value)}${suffix}</span></div>`;
   }
-  function formatDateFr(v) {
-    const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    return m ? `${m[3]}/${m[2]}/${m[1]}` : v;
-  }
+  function formatDateFr(v) { const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? `${m[3]}/${m[2]}/${m[1]}` : v; }
   function reviewHtml(p) {
-    return `<div style="background:#f6f6f6;border-radius:12px;padding:10px 14px;color:#181818">
-      ${row('Course', p.course)}
-      ${row('Date', formatDateFr(p.date))}
-      ${row('Distance', p.distance, ' km')}
-      ${row('Coureur', `${p.prenom} ${p.nom}`)}
-      ${row('Temps', p.temps)}
-      ${row('Classement scratch', p.classement)}
-      ${row('Nombre de rentrants', p.rentrants)}
-      ${row('Catégorie', p.categorie)}
-      ${row('Sexe', p.sexe === 'HOMME' ? 'Homme' : p.sexe === 'FEMME' ? 'Femme' : p.sexe)}
-      ${row('Classement catégorie', p.classementCategorie)}
-      ${row('Dénivelé D+', p.denivele, ' m')}
-    </div>`;
+    return `<div style="background:#f6f6f6;border-radius:12px;padding:10px 14px;color:#181818">${row('Course', p.course)}${row('Date', formatDateFr(p.date))}${row('Distance', p.distance, ' km')}${row('Coureur', `${p.prenom} ${p.nom}`)}${row('Temps', p.temps)}${row('Classement scratch', p.classement)}${row('Nombre de rentrants', p.rentrants)}${row('Catégorie', p.categorie)}${row('Sexe', p.sexe === 'HOMME' ? 'Homme' : p.sexe === 'FEMME' ? 'Femme' : p.sexe)}${row('Classement catégorie', p.classementCategorie)}${row('Dénivelé D+', p.denivele, ' m')}</div>`;
   }
 
   function openDialog(p) {
@@ -125,19 +99,51 @@
     let box = document.getElementById('resultAfterSave');
     if (!box) { box = document.createElement('div'); box.id = 'resultAfterSave'; status.insertAdjacentElement('afterend', box); }
     box.style.cssText = 'margin-top:14px;padding:16px;border:1px solid #ddd;border-radius:14px;background:#fff;color:#181818';
-    box.innerHTML = `<b>Résultat enregistré</b><div style="margin:8px 0 14px">${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.course)} — ${esc(p.temps)}</div><div style="display:grid;gap:8px"><button type="button" id="editSavedResult" class="secondary-btn">MODIFIER MA SAISIE</button><button type="button" id="deleteSavedResult" class="danger-btn">SUPPRIMER MA SAISIE</button></div>`;
-    document.getElementById('editSavedResult').onclick = () => { editing = true; submitBtn.textContent = 'ENREGISTRER LA MODIFICATION'; status.textContent = 'Modifiez les champs puis validez.'; box.style.display = 'none'; window.scrollTo({top:form.offsetTop-70,behavior:'smooth'}); };
+    box.innerHTML = `<b>Résultat enregistré</b><div style="margin:8px 0 14px">${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.course)} — ${esc(p.temps)}</div><div style="display:grid;gap:8px"><button type="button" id="editSavedResult" class="secondary-btn">MODIFIER MA SAISIE</button><button type="button" id="deleteSavedResult" class="danger-btn">SUPPRIMER MA SAISIE</button><button type="button" id="quitSavedResult" class="submit-result-btn">QUITTER</button></div>`;
+    submitBtn.style.display = 'none';
+    document.getElementById('editSavedResult').onclick = () => {
+      editing = true;
+      submitBtn.textContent = 'ENREGISTRER LA MODIFICATION';
+      submitBtn.style.display = '';
+      status.textContent = 'Modifiez les champs puis validez.';
+      box.style.display = 'none';
+      window.scrollTo({top:form.offsetTop-70,behavior:'smooth'});
+    };
     document.getElementById('deleteSavedResult').onclick = deleteSaved;
+    document.getElementById('quitSavedResult').onclick = quitSaved;
+  }
+
+  function quitSaved() {
+    currentResultId = null;
+    currentPayload = null;
+    editing = false;
+    form.reset();
+    const box = document.getElementById('resultAfterSave');
+    if (box) box.remove();
+    submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
+    submitBtn.style.display = '';
+    status.textContent = '';
+    const homeBtn = document.querySelector('[data-page="home"]');
+    if (homeBtn) homeBtn.click();
+    else window.location.hash = '#home';
   }
 
   async function sendConfirmed() {
-    closeDialog(); status.textContent = editing ? 'Modification en cours…' : 'Envoi en cours…';
+    closeDialog();
+    submitBtn.disabled = true;
+    status.textContent = editing ? 'Modification en cours…' : 'Envoi en cours…';
     try {
       const out = await resultsPost(currentPayload);
-      currentResultId = out.id || currentResultId; editing = false; submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
+      currentResultId = out.id || currentResultId;
+      editing = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
       status.textContent = '✓ Résultat enregistré. Vous pouvez encore le modifier ou le supprimer ci-dessous.';
       showAfterSave(currentPayload);
-    } catch (err) { status.textContent = err.message || 'Impossible d’enregistrer le résultat.'; }
+    } catch (err) {
+      submitBtn.disabled = false;
+      status.textContent = err.message || 'Impossible d’enregistrer le résultat.';
+    }
   }
 
   async function deleteSaved() {
@@ -148,12 +154,14 @@
       await resultsPost({action:'deleteResult',id:currentResultId});
       currentResultId=null; currentPayload=null; editing=false; form.reset();
       const box=document.getElementById('resultAfterSave'); if(box) box.remove();
-      submitBtn.textContent='ENVOYER MON RÉSULTAT'; status.textContent='✓ Saisie supprimée.';
+      submitBtn.textContent='ENVOYER MON RÉSULTAT'; submitBtn.style.display='';
+      status.textContent='✓ Saisie supprimée.';
     } catch(err) { status.textContent=err.message || 'Impossible de supprimer la saisie.'; }
   }
 
   form.onsubmit = e => {
     e.preventDefault();
+    if (currentResultId && !editing) return;
     const p=buildPayload(); const error=validate(p);
     if(error){status.textContent=error;return;}
     currentPayload=p; openDialog(p);
