@@ -21,7 +21,6 @@
   function buildPayload() {
     let courseId = '', course = '', date = '', distance = '';
     const manual = document.getElementById('rfManual')?.classList.contains('show');
-
     if (manual) {
       course = document.getElementById('rfCourseName').value.trim();
       date = document.getElementById('rfDate').value;
@@ -30,13 +29,10 @@
       const selectedId = document.getElementById('rfCourse').value;
       const c = (typeof courses !== 'undefined' ? courses : []).find(x => String(x.id) === String(selectedId));
       if (c) {
-        courseId = c.id;
-        course = c.nom;
-        date = c.date;
+        courseId = c.id; course = c.nom; date = c.date;
         distance = String(c.distance || '').replace(/[^0-9.,]/g, '').replace(',', '.');
       }
     }
-
     return {
       action: currentResultId && editing ? 'updateResult' : 'addResult',
       id: currentResultId || undefined,
@@ -65,12 +61,12 @@
     if (dlg) return dlg;
     dlg = document.createElement('div');
     dlg.id = 'resultReviewDialog';
-    dlg.style.cssText = 'display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);padding:18px;align-items:center;justify-content:center';
+    dlg.style.cssText = 'display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.60);padding:16px;align-items:center;justify-content:center';
     dlg.innerHTML = `
-      <div style="background:#fff;border-radius:18px;padding:22px;max-width:520px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 15px 45px rgba(0,0,0,.3)">
-        <h2 style="margin-top:0">Vérifiez votre résultat</h2>
-        <div id="resultReviewBody" style="line-height:1.65"></div>
-        <div style="display:grid;gap:10px;margin-top:20px">
+      <div style="background:#fff;color:#181818;border-radius:18px;padding:20px;max-width:520px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 15px 45px rgba(0,0,0,.3)">
+        <h2 style="margin:0 0 14px;color:#181818;font-size:24px">Vérifiez votre saisie</h2>
+        <div id="resultReviewBody" style="color:#181818;line-height:1.4;font-size:16px"></div>
+        <div style="display:grid;gap:10px;margin-top:18px">
           <button type="button" id="resultConfirmBtn" class="submit-result-btn">CONFIRMER LA SAISIE</button>
           <button type="button" id="resultModifyBtn" class="secondary-btn">MODIFIER</button>
           <button type="button" id="resultCancelBtn" class="secondary-btn">ANNULER</button>
@@ -83,15 +79,31 @@
     return dlg;
   }
 
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function row(label, value, suffix='') {
+    if (value === undefined || value === null || String(value).trim() === '') return '';
+    return `<div style="display:grid;grid-template-columns:minmax(120px,42%) 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e8e8e8;color:#181818"><strong style="color:#181818">${esc(label)}</strong><span style="color:#181818;overflow-wrap:anywhere">${esc(value)}${suffix}</span></div>`;
+  }
+  function formatDateFr(v) {
+    const m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? `${m[3]}/${m[2]}/${m[1]}` : v;
+  }
   function reviewHtml(p) {
-    const safe = s => String(s || '—').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    return `<p><b>Coureur :</b> ${safe(p.prenom)} ${safe(p.nom)}</p>
-      <p><b>Course :</b> ${safe(p.course)}</p>
-      <p><b>Date :</b> ${safe(p.date)} &nbsp; <b>Distance :</b> ${safe(p.distance)} km</p>
-      <p><b>Temps :</b> ${safe(p.temps)} &nbsp; <b>Classement :</b> ${safe(p.classement)}</p>
-      <p><b>Catégorie :</b> ${safe(p.categorie)} &nbsp; <b>Sexe :</b> ${safe(p.sexe)}</p>
-      <p><b>Classement catégorie :</b> ${safe(p.classementCategorie)}</p>
-      <p><b>Rentrants :</b> ${safe(p.rentrants)} &nbsp; <b>D+ :</b> ${safe(p.denivele)}</p>`;
+    return `<div style="background:#f6f6f6;border-radius:12px;padding:10px 14px;color:#181818">
+      ${row('Course', p.course)}
+      ${row('Date', formatDateFr(p.date))}
+      ${row('Distance', p.distance, ' km')}
+      ${row('Coureur', `${p.prenom} ${p.nom}`)}
+      ${row('Temps', p.temps)}
+      ${row('Classement scratch', p.classement)}
+      ${row('Nombre de rentrants', p.rentrants)}
+      ${row('Catégorie', p.categorie)}
+      ${row('Sexe', p.sexe === 'HOMME' ? 'Homme' : p.sexe === 'FEMME' ? 'Femme' : p.sexe)}
+      ${row('Classement catégorie', p.classementCategorie)}
+      ${row('Dénivelé D+', p.denivele, ' m')}
+    </div>`;
   }
 
   function openDialog(p) {
@@ -100,18 +112,10 @@
     document.getElementById('resultConfirmBtn').textContent = editing ? 'CONFIRMER LA MODIFICATION' : 'CONFIRMER LA SAISIE';
     dlg.style.display = 'flex';
   }
-
-  function closeDialog() {
-    const dlg = document.getElementById('resultReviewDialog');
-    if (dlg) dlg.style.display = 'none';
-  }
+  function closeDialog() { const dlg = document.getElementById('resultReviewDialog'); if (dlg) dlg.style.display = 'none'; }
 
   async function resultsPost(data) {
-    const r = await fetch(RESULTS_API, {
-      method: 'POST',
-      headers: {'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(data)
-    });
+    const r = await fetch(RESULTS_API, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(data) });
     const out = await r.json();
     if (!out.ok) throw new Error(out.error || 'Erreur');
     return out;
@@ -119,37 +123,21 @@
 
   function showAfterSave(p) {
     let box = document.getElementById('resultAfterSave');
-    if (!box) {
-      box = document.createElement('div');
-      box.id = 'resultAfterSave';
-      status.insertAdjacentElement('afterend', box);
-    }
-    box.style.cssText = 'margin-top:14px;padding:16px;border:1px solid #ddd;border-radius:14px;background:#fff';
-    box.innerHTML = `<b>Résultat enregistré</b><div style="margin:8px 0 14px">${p.prenom} ${p.nom} — ${p.course} — ${p.temps}</div>
-      <div style="display:grid;gap:8px"><button type="button" id="editSavedResult" class="secondary-btn">MODIFIER MA SAISIE</button><button type="button" id="deleteSavedResult" class="danger-btn">SUPPRIMER MA SAISIE</button></div>`;
-    document.getElementById('editSavedResult').onclick = () => {
-      editing = true;
-      submitBtn.textContent = 'ENREGISTRER LA MODIFICATION';
-      status.textContent = 'Modifiez les champs puis validez.';
-      box.style.display = 'none';
-      window.scrollTo({top: form.offsetTop - 70, behavior:'smooth'});
-    };
+    if (!box) { box = document.createElement('div'); box.id = 'resultAfterSave'; status.insertAdjacentElement('afterend', box); }
+    box.style.cssText = 'margin-top:14px;padding:16px;border:1px solid #ddd;border-radius:14px;background:#fff;color:#181818';
+    box.innerHTML = `<b>Résultat enregistré</b><div style="margin:8px 0 14px">${esc(p.prenom)} ${esc(p.nom)} — ${esc(p.course)} — ${esc(p.temps)}</div><div style="display:grid;gap:8px"><button type="button" id="editSavedResult" class="secondary-btn">MODIFIER MA SAISIE</button><button type="button" id="deleteSavedResult" class="danger-btn">SUPPRIMER MA SAISIE</button></div>`;
+    document.getElementById('editSavedResult').onclick = () => { editing = true; submitBtn.textContent = 'ENREGISTRER LA MODIFICATION'; status.textContent = 'Modifiez les champs puis validez.'; box.style.display = 'none'; window.scrollTo({top:form.offsetTop-70,behavior:'smooth'}); };
     document.getElementById('deleteSavedResult').onclick = deleteSaved;
   }
 
   async function sendConfirmed() {
-    closeDialog();
-    status.textContent = editing ? 'Modification en cours…' : 'Envoi en cours…';
+    closeDialog(); status.textContent = editing ? 'Modification en cours…' : 'Envoi en cours…';
     try {
       const out = await resultsPost(currentPayload);
-      currentResultId = out.id || currentResultId;
-      editing = false;
-      submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
+      currentResultId = out.id || currentResultId; editing = false; submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
       status.textContent = '✓ Résultat enregistré. Vous pouvez encore le modifier ou le supprimer ci-dessous.';
       showAfterSave(currentPayload);
-    } catch (err) {
-      status.textContent = err.message || 'Impossible d’enregistrer le résultat.';
-    }
+    } catch (err) { status.textContent = err.message || 'Impossible d’enregistrer le résultat.'; }
   }
 
   async function deleteSaved() {
@@ -157,27 +145,17 @@
     if (!confirm('Supprimer définitivement cette saisie ?')) return;
     status.textContent = 'Suppression en cours…';
     try {
-      await resultsPost({action:'deleteResult', id:currentResultId});
-      currentResultId = null;
-      currentPayload = null;
-      editing = false;
-      form.reset();
-      const box = document.getElementById('resultAfterSave');
-      if (box) box.remove();
-      submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
-      status.textContent = '✓ Saisie supprimée.';
-    } catch (err) {
-      status.textContent = err.message || 'Impossible de supprimer la saisie.';
-    }
+      await resultsPost({action:'deleteResult',id:currentResultId});
+      currentResultId=null; currentPayload=null; editing=false; form.reset();
+      const box=document.getElementById('resultAfterSave'); if(box) box.remove();
+      submitBtn.textContent='ENVOYER MON RÉSULTAT'; status.textContent='✓ Saisie supprimée.';
+    } catch(err) { status.textContent=err.message || 'Impossible de supprimer la saisie.'; }
   }
 
-  // Remplace le gestionnaire d'envoi initial défini dans app.js.
   form.onsubmit = e => {
     e.preventDefault();
-    const p = buildPayload();
-    const error = validate(p);
-    if (error) { status.textContent = error; return; }
-    currentPayload = p;
-    openDialog(p);
+    const p=buildPayload(); const error=validate(p);
+    if(error){status.textContent=error;return;}
+    currentPayload=p; openDialog(p);
   };
 })();
