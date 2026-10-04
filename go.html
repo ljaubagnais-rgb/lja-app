@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f47a16">
+  <title>LJA</title>
+  <style>html,body,iframe{margin:0;width:100%;height:100%;border:0}body{overflow:hidden}iframe{display:block}</style>
+</head>
+<body>
+  <iframe id="lja" src="./index.html" title="Application LJA"></iframe>
+  <script>
+    const allowed = new Set(['submit-result','courses','results']);
+    const page = new URLSearchParams(location.search).get('page');
+    const frame = document.getElementById('lja');
+    frame.addEventListener('load', () => {
+      if (!allowed.has(page)) return;
+      const w = frame.contentWindow;
+      if (typeof w.showPage === 'function') w.showPage(page);
+      if (page === 'submit-result' && typeof w.loadResultCourseOptions === 'function') {
+        w.loadResultCourseOptions();
+      }
+    });
+  </script>
+</body>
+</html>
