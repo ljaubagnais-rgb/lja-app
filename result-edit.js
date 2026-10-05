@@ -135,6 +135,15 @@
     try {
       const out = await resultsPost(currentPayload);
       currentResultId = out.id || currentResultId;
+      if (!currentPayload.courseId && typeof syncManualCourse === 'function') {
+  await syncManualCourse(
+    currentPayload.course,
+    currentPayload.date,
+    currentPayload.distance,
+    currentPayload.nom,
+    currentPayload.prenom
+  );
+}
       editing = false;
       submitBtn.disabled = false;
       submitBtn.textContent = 'ENVOYER MON RÉSULTAT';
