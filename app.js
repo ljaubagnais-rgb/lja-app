@@ -82,11 +82,12 @@ async function syncManualCourse(course, date, distance, nom, prenom) {
     }
 
   } catch (err) {
-    console.warn(
-      'Résultat enregistré, mais synchronisation de la course impossible :',
-      err
-    );
-  }
+  alert(
+    'Résultat enregistré, mais création de la course impossible : ' +
+    (err.message || err)
+  );
+  console.error(err);
+}
 }
 function setManualResult(on){resultManual=on;document.getElementById('rfManual').classList.toggle('show',on);document.getElementById('rfCourse').required=!on;['rfCourseName','rfDate','rfDistance'].forEach(id=>document.getElementById(id).required=on);document.getElementById('rfOther').textContent=on?'← Choisir une course de la liste':"Ma course n'est pas dans la liste";document.getElementById('rfSelectedInfo').textContent='';if(on)document.getElementById('rfCourse').value=''}
 document.querySelectorAll('[data-page="submit-result"]').forEach(el=>el.addEventListener('click',()=>loadResultCourseOptions()));document.getElementById('rfOther').onclick=()=>setManualResult(!resultManual);document.getElementById('rfCourse').onchange=e=>{const c=courses.find(x=>String(x.id)===String(e.target.value));document.getElementById('rfSelectedInfo').textContent=c?`${c.nom} • ${formatDate(c.date)} • ${c.distance||'distance non indiquée'}`:''};
