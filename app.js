@@ -53,21 +53,7 @@ async function syncManualCourse(course, date, distance, nom, prenom) {
         throw new Error(created.error || 'Création de la course impossible');
       }
 
-      // On recharge pour récupérer son identifiant
-      const updated = await apiGet({
-        action: 'courses',
-        t: Date.now()
-      });
-
-      existing = updated.find(c =>
-        normalize(c.nom) === normalize(course) &&
-        String(c.date).substring(0, 10) === String(date).substring(0, 10) &&
-        normalizeDistance(c.distance) === normalizeDistance(distance)
-      );
-
-      if (existing) {
-        courseId = existing.id;
-      }
+      courseId = created.id;
     }
 
     // Inscription du coureur à la course
