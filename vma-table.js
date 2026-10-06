@@ -57,6 +57,7 @@
     let html=`
       <div style="margin-top:20px">
         <div style="background:#e53935;color:white;padding:14px;border-radius:12px 12px 0 0;text-align:center">
+        <img src="LOGO_LJA4_2024.jpg" alt="Logo LJA" style="width:90px;height:90px;object-fit:contain;background:white;border-radius:10px;margin-bottom:8px">
           <div style="font-size:20px;font-weight:900">LES JOGGEURS AUBAGNAIS</div>
           <div style="font-size:17px;font-weight:800;margin-top:4px">TABLEAU DES ALLURES SELON VMA</div>
           <div style="font-size:24px;font-weight:900;margin-top:7px">VMA : ${String(vma).replace('.',',')} km/h</div>
