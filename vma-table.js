@@ -195,6 +195,41 @@ html+=`
   </button>
 `;
     out.innerHTML=html;
+    const imageBtn=document.getElementById('vmaImageBtn');
+
+if(imageBtn){
+  imageBtn.addEventListener('click',async()=>{
+    const fiche=out.firstElementChild;
+
+    if(!fiche || typeof html2canvas==='undefined'){
+      alert("Impossible de créer l'image.");
+      return;
+    }
+
+    imageBtn.style.display='none';
+
+    try{
+      const canvas=await html2canvas(fiche,{
+        scale:2,
+        backgroundColor:'#050505',
+        useCORS:true
+      });
+
+      const link=document.createElement('a');
+      const vmaName=String(vma).replace('.','-');
+
+      link.download=`Tableau-VMA-${vmaName}-LJA.png`;
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+
+    }catch(error){
+      console.error(error);
+      alert("Une erreur est survenue lors de la création de l'image.");
+    }finally{
+      imageBtn.style.display='';
+    }
+  });
+}
   }
 
   btn.addEventListener('click',render);
