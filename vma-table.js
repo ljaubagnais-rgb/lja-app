@@ -188,7 +188,11 @@
     });
 
     html+=`</table></div></div></div>`;
-
+html+=`
+  <button id="vmaImageBtn" type="button" class="submit-result-btn" style="margin-top:18px">
+    ENREGISTRER LE TABLEAU EN IMAGE
+  </button>
+`;
     out.innerHTML=html;
   }
 
