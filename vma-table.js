@@ -69,7 +69,7 @@
                 <th rowspan="2" style="border:1px solid #333;padding:8px;background:#111;color:white">DISTANCE<br>mètres</th>
                 <th colspan="3" style="border:1px solid #333;padding:7px;background:#a9a9a9;color:#111">ENDURANCE</th>
                 <th colspan="2" style="border:1px solid #333;padding:7px;background:#e5b4b4;color:#111">RÉSISTANCE</th>
-                <th colspan="2" style="border:1px solid #333;padding:7px;background:#8bd447;color:#111">RÉSISTANCE</th>
+                <th colspan="2" style="border:1px solid #333;padding:7px;background:#8bd447;color:#111">RÉSIST Hte</th>
                 <th colspan="3" style="border:1px solid #333;padding:7px;background:#8fc8d8;color:#111">VMA</th>
               </tr>
               <tr>
